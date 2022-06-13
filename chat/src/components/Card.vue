@@ -55,10 +55,12 @@ export default {
             this.store.setMessages({
                 user: this.store.user,
                 message: this.inputText,
+                time: new Date().getHours() + ':' + new Date().getMinutes()
             })
             SocketioService.emitMessage({
                 user: this.store.user,
                 message: this.inputText,
+                time: new Date().getHours() + ':' + new Date().getMinutes()
             })
             this.inputText = ''
         },
@@ -126,6 +128,8 @@ export default {
         height: 35rem;
         overflow: auto;
         position: relative;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }
 </style>
