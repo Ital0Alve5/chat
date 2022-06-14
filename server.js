@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
 const http = require('http').createServer(app);
+require('dotenv').config()
 const io = require('socket.io')(http, {
     cors: {
-        origins: ['http://localhost:8080']
+        origins: [`${process.env.VUE_APP_HOST}:8080`]
     }
 });
 
@@ -63,6 +64,7 @@ io.on('connection', (socket) => {
     })
 });
 
-http.listen(3002, () => {
-    console.log('listening on *:3002');
-});
+const port = process.env.VUE_APP_PORT || 5000
+http.listen(port, () => {
+    console.log(`listening on *:${port}`);
+})
