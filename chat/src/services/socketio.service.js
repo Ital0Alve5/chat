@@ -1,7 +1,6 @@
 import {
     io
 } from 'socket.io-client';
-
 class SocketioService {
     socket;
 
@@ -21,7 +20,8 @@ class SocketioService {
     }
 
     setupSocketConnection() {
-        this.socket = io(process.env.VUE_APP_SOCKET_ENDPOINT);
+        console.log(process.env)
+        this.socket = io(`${process.env.VUE_APP_HOST}:${process.env.VUE_APP_PORT}`);
     }
 
     reconnect() {
