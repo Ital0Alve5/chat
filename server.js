@@ -1,12 +1,24 @@
 const express = require('express')
 const app = express()
+const socket = require('http').createServer(app);
 const http = require('http').createServer(app);
+var path = require('path');
 require('dotenv').config()
-const io = require('socket.io')(http, {
+const io = require('socket.io')(socket, {
     cors: {
         origins: [`${process.env.VUE_APP_HOST}:8080`]
     }
 });
+
+app.use(express.static('./chat/dist'));
+
+app.get('/', (_req, res) => {
+    res.sendFile('./chat/dist/index.html');
+});
+
+http.listen(8080, ()=>{
+    console.log("http://localhost:8080")
+})
 
 let messages = []
 let users = []
@@ -65,6 +77,6 @@ io.on('connection', (socket) => {
 });
 
 const port = process.env.VUE_APP_PORT || 5000
-http.listen(port, () => {
+socket.listen(port, () => {
     console.log(`listening on *:${port}`);
 })
