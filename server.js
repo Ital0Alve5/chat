@@ -1,25 +1,35 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+app.use(cors())
 const socket = require('http').createServer(app);
 const http = require('http').createServer(app);
 require('dotenv').config()
 
-const webPort = process.env.PORT || 80
+const webPort = process.env.PORT || 5000
 
 const io = require('socket.io')(socket, {
     cors: {
-        origins: [`${process.env.VUE_APP_HOST}:${webPort}`]
+        origins: [
+            `https://localhost:${webPort}`,
+            `http://localhost:${webPort}`,
+            `http://0.0.0.0:${webPort}`,
+            `https://0.0.0.0:${webPort}`,
+            `https://italochat.herokuapp.com/`,
+            `http://italochat.herokuapp.com/`
+        ]
     }
 });
 
-app.use(express.static('./chat/dist'));
+app.use(express.static(__dirname + '/chat/dist'));
 
 app.get('/', (_req, res) => {
-    res.sendFile('./chat/dist/index.html');
-});
+    res.sendFile(__dirname + '/chat/dist/index.html');
+})
 
-http.listen(webPort, ()=>{
-    console.log(`${process.env.VUE_APP_HOST}:${webPort}`)
+http.listen(webPort, () => {
+    console.log(`port: ${webPort}`)
+    console.log('https://italochat.herokuapp.com:')
 })
 
 let messages = []
@@ -78,7 +88,6 @@ io.on('connection', (socket) => {
     })
 });
 
-const port = process.env.VUE_APP_SOCKET_PORT || 3002
-socket.listen(port, () => {
-    console.log(`listening on *:${port}`);
+socket.listen(3002, () => {
+    console.log(`listening on *:${3002}`);
 })

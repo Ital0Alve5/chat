@@ -20,8 +20,7 @@ class SocketioService {
     }
 
     setupSocketConnection() {
-        console.log(process.env)
-        this.socket = io(`${process.env.VUE_APP_HOST}:${process.env.VUE_APP_PORT}`);
+        this.socket = io('https://italochat.herokuapp.com:3002');
     }
 
     reconnect() {
